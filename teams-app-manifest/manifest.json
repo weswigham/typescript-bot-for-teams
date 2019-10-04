@@ -1,0 +1,33 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.5",
+    "version": "1.0",
+    "id": "2feba91b-9f5a-48e1-afcc-66918cf2993c",
+    "packageName": "com.microsoft.typescript.teams.bot",
+    "developer": {
+      "name": "Microsoft Corp",
+      "websiteUrl": "https://example.azurewebsites.net",
+      "privacyUrl": "https://example.azurewebsites.net/privacy",
+      "termsOfUseUrl": "https://example.azurewebsites.net/termsofuse"
+    },
+    "name": {
+      "short": "TypeScript Bot",
+      "full": "Microsoft Teams TypeScript Bot"
+    },
+    "description": {
+      "short": "Automaton and orchestrator",
+      "full": "Bot that automates and orchestrates complex tasks through teams"
+    },
+    "icons": {
+      "outline": "ts_outline.png",
+      "color": "ts.png"
+    },
+    "accentColor": "#007acc",
+    "bots": [
+      {
+        "botId": "efd379b2-5198-4cdb-adbe-eb144f1c8c12",
+        "scopes": ["personal", "team"]
+      }
+    ],
+    "validDomains": ["*.azurewebsites.net"]
+  }
