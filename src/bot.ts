@@ -69,7 +69,7 @@ export class TypescriptStandupBot {
 
     async handleSceduleStandupMessage(turnContext: TurnContext, cronExpr: string) {
         if (!validate(cronExpr)) {
-            await turnContext.sendActivity(`'${cronExpr}' is not a valid cron expression. Try something like '30 10 * * Monday,Tuesday,Wednesday,Thursday,Friday', which would schedule a standup at 10:30 each weekday.`);
+            await turnContext.sendActivity(`'${cronExpr}' is not a valid cron expression. Try something like '30 10 * * mon,tue,wed,thu,fri', which would schedule a standup at 10:30 each weekday.`);
             return;
         }
         const ref = TurnContext.getConversationReference(turnContext.activity);
