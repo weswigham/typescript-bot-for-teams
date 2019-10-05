@@ -57,7 +57,7 @@ export class TypescriptStandupBot {
         }
         this.task = new CronJob(cronExpr, () => {
             this.postStandupThread(ref);
-        }, null, null, "America/Los_Angeles");
+        }, null, true, "America/Los_Angeles", this);
         if (save) {
             const toStore: BotStorageSchema = {
                 cronExpr: { value: cronExpr, eTag: "*" },
