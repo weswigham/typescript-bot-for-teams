@@ -37,7 +37,7 @@ export class TypescriptStandupBot {
             const date = new Date();
             await this.adapter.createReplyChain(context, [{
                 // Month is zero indexed, and day is just off by one?!?
-                text: `*Standup ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() - 1}*` 
+                text: `**Standup ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() - 1}**`,
             }]);
         });
     }
@@ -48,7 +48,7 @@ export class TypescriptStandupBot {
         }
         this.task = schedule(cronExpr, () => {
             this.postStandupThread(ref);
-        });
+        }, { timezone: "America/Los_Angeles" });
         if (save) {
             const toStore: BotStorageSchema = {
                 cronExpr: { value: cronExpr, eTag: "*" },
