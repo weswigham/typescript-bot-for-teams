@@ -35,10 +35,14 @@ export class TypescriptStandupBot {
     async postStandupThread(ref: Partial<ConversationReference>) {
         this.adapter.continueConversation(ref, async context => {
             const date = new Date();
-            await this.adapter.createReplyChain(context, [{
+            const curRef = TurnContext.getConversationReference(context.activity);
+            const act = TurnContext.applyConversationReference({
                 // Month is zero indexed, and day is just off by one?!?
-                text: `**Standup ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() - 1}**`,
-            }]);
+                text: `**Standup ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() - 1}**`
+            }, curRef);
+            delete act.replyToId;
+            act.conversation = {...act.conversation, id: curRef.channelId};
+            await context.sendActivity(act);
         });
     }
 
