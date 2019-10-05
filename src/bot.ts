@@ -3,7 +3,16 @@
 
 import { TurnContext, BotState, ConversationReference, Storage } from 'botbuilder';
 import { TeamsAdapter } from 'botbuilder-teams';
-import { schedule, validate, ScheduledTask } from "node-cron";
+import { CronJob, CronTime } from "cron";
+
+function validate(cronExp: string) {
+    try {
+        new CronTime(cronExp);
+        return true;
+    }
+    catch {}
+    return false;
+}
 
 const scheduleMessageRegex = /schedule standup here on (.*)/;
 
@@ -13,7 +22,7 @@ interface BotStorageSchema {
 }
 
 export class TypescriptStandupBot {
-    private task: ScheduledTask | undefined;
+    private task: CronJob | undefined;
     constructor(
         private conversationState: BotState,
         private storage: Storage,
@@ -44,11 +53,11 @@ export class TypescriptStandupBot {
 
     async setupStandupCron(cronExpr: string, ref: Partial<ConversationReference>, save: boolean) {
         if (this.task) {
-            this.task.stop().destroy();
+            this.task.stop();
         }
-        this.task = schedule(cronExpr, () => {
+        this.task = new CronJob(cronExpr, () => {
             this.postStandupThread(ref);
-        }, { timezone: "America/Los_Angeles" });
+        }, null, null, "America/Los_Angeles");
         if (save) {
             const toStore: BotStorageSchema = {
                 cronExpr: { value: cronExpr, eTag: "*" },
