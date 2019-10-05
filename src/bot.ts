@@ -77,7 +77,7 @@ export class TypescriptStandupBot {
             await turnContext.sendActivity("Existing standup schedule canceled, resceduling...");
         }
         await this.setupStandupCron(cronExpr, ref, /*save*/ true);
-        await turnContext.sendActivity(`Standups scheduled for '${cronExpr}'.`);
+        await turnContext.sendActivity(`Standups scheduled for '${cronExpr}', next up on ${this.task!.nextDate().toString()}`);
     }
 
     async onTurn(turnContext: TurnContext) {
