@@ -4,6 +4,7 @@
 import { TurnContext, BotState, ConversationReference, Storage } from 'botbuilder';
 import { TeamsAdapter } from 'botbuilder-teams';
 import { CronJob, CronTime } from "cron";
+import moment = require("moment-timezone");
 
 function validate(cronExp: string) {
     try {
@@ -43,10 +44,9 @@ export class TypescriptStandupBot {
 
     async postStandupThread(ref: Partial<ConversationReference>) {
         this.adapter.continueConversation(ref, async context => {
-            const date = new Date();
+            const date = moment().tz("America/Los_Angeles").format("YYYY-MM-DD");
             await this.adapter.createReplyChain(context, [{
-                // Month is zero indexed, and day is just off by one?!?
-                text: `**Standup ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() - 1}**`
+                text: `**Standup ${date}**`
             }], /*inGeneral*/ false);
         });
     }
