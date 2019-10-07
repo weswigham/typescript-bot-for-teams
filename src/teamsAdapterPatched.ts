@@ -1,7 +1,6 @@
 import { TeamsAdapter, TeamsContext, TeamsConnectorClient, Teams, TeamsChannelData } from "botbuilder-teams";
 import { TurnContext, Activity, ConversationReference, ActivityTypes } from "botbuilder";
 import * as msRest from "@azure/ms-rest-js";
-import * as Mappers from "botbuilder-teams/src/schema/models/mappers";
 
 async function createReplyChain(ctx: TeamsContext, args: { activity: Partial<Activity>, channelData: TeamsChannelData }) {
     return (await ctx.teamsConnectorClient.teams["client"].sendOperationRequest(
@@ -58,7 +57,7 @@ export const CreateReplyChainCreatedResponse: msRest.CompositeMapper = {
     }
 };
 
-const serializer = new msRest.Serializer({ ...Mappers, TeamsCreateReplyChainRequest, CreateReplyChainCreatedResponse });
+const serializer = new msRest.Serializer({ TeamsCreateReplyChainRequest, CreateReplyChainCreatedResponse });
 const createReplyChainOperationSpec: msRest.OperationSpec = {
     httpMethod: "POST",
     path: "v3/conversations",
