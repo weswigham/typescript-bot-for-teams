@@ -58,7 +58,23 @@ export const CreateReplyChainCreatedResponse: msRest.CompositeMapper = {
     }
 };
 
-const serializer = new msRest.Serializer({ TeamsCreateReplyChainRequest, CreateReplyChainCreatedResponse, ...Mappers });
+const Activity: msRest.CompositeMapper = {
+    serializedName: "Activity",
+    type: {
+        name: "Composite",
+        className: "Activity",
+        modelProperties: {
+            dummyProperty: {
+                serializedName: "dummyProperty",
+                type: {
+                    name: "String"
+                }
+            }
+        }
+    }
+};
+
+const serializer = new msRest.Serializer({ Activity, TeamsCreateReplyChainRequest, CreateReplyChainCreatedResponse, ...Mappers });
 const createReplyChainOperationSpec: msRest.OperationSpec = {
     httpMethod: "POST",
     path: "v3/conversations",
