@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 
 import { TurnContext, BotState, ConversationReference, Storage } from 'botbuilder';
-import { TeamsAdapter } from 'botbuilder-teams';
 import { CronJob, CronTime } from "cron";
 import moment = require("moment-timezone");
+import { PatchedTeamsAdapter } from './teamsAdapterPatched';
 
 function validate(cronExp: string) {
     try {
@@ -27,7 +27,7 @@ export class TypescriptStandupBot {
     constructor(
         private conversationState: BotState,
         private storage: Storage,
-        private adapter: TeamsAdapter
+        private adapter: PatchedTeamsAdapter
     ) {
         // This is potentially racy if a message arives and is handled before this is done
         // If that turns out to be problematic, we can try to queue turns while initialization
@@ -45,9 +45,9 @@ export class TypescriptStandupBot {
     async postStandupThread(ref: Partial<ConversationReference>) {
         this.adapter.continueConversation(ref, async context => {
             const date = moment().tz("America/Los_Angeles").format("YYYY-MM-DD");
-            await this.adapter.createReplyChain(context, [{
+            await this.adapter.createReplyChainPatched(context, {
                 text: `**Standup ${date}**`
-            }], /*inGeneral*/ false);
+            }, /*inGeneral*/ false);
         });
     }
 

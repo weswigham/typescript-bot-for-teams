@@ -11,8 +11,9 @@ import { MemoryStorage } from 'botbuilder';
 
 // This bot's main dialog.
 import { TypescriptStandupBot } from './bot';
-import { TeamsMiddleware, TeamSpecificConversationState, TeamsAdapter } from 'botbuilder-teams';
+import { TeamsMiddleware, TeamSpecificConversationState } from 'botbuilder-teams';
 import { BlobStorage } from 'botbuilder-azure';
+import { PatchedTeamsAdapter } from './teamsAdapterPatched';
 
 const ENV_FILE = path.join(__dirname, '..', '.env');
 config({ path: ENV_FILE });
@@ -34,7 +35,7 @@ const botState = new TeamSpecificConversationState(storage);
 
 // Create adapter.
 // See https://aka.ms/about-bot-adapter to learn more about adapters.
-const adapter = new TeamsAdapter({
+const adapter = new PatchedTeamsAdapter({
     appId: process.env.MicrosoftAppID,
     appPassword: process.env.MicrosoftAppPassword,
 });
