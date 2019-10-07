@@ -42,14 +42,9 @@ const adapter = new PatchedTeamsAdapter({
 adapter.use(new TeamsMiddleware());
 
 // Catch-all for any unhandled errors in your bot.
-adapter.onTurnError = async (context, error) => {
-    // This check writes out errors to console log .vs. app insights.
-    console.error(`\n [onTurnError]: ${ error }`);
-    // Send a message to the user.
-    await context.sendActivity(`Oops. Something went wrong!`);
-    // Clear out state
-    await botState.delete(context);
-};
+//adapter.onTurnError = async (_context, error) => {
+//    throw error; // Rethrow error so stack trace is reported - fail hard
+//};
 
 const bot = new TypescriptStandupBot(botState, storage, adapter);
 
