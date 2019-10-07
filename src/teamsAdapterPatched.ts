@@ -58,18 +58,33 @@ export const CreateReplyChainCreatedResponse: msRest.CompositeMapper = {
     }
 };
 
+// THIS TYPE ALLOWS FOR REPRESENTING SO MANY INVALID STATES
+// AND THIS ONLY EVEN ENCODES SOME OF THE FIELDS FROM
+// https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-connector-api-reference
 const Activity: msRest.CompositeMapper = {
     serializedName: "Activity",
     type: {
         name: "Composite",
         className: "Activity",
         modelProperties: {
-            dummyProperty: {
-                serializedName: "dummyProperty",
+            action: {
+                serializedName: "action",
                 type: {
                     name: "String"
                 }
-            }
+            },
+            text: {
+                serializedName: "text",
+                type: {
+                    name: "String"
+                }
+            },
+            type: {
+                serializedName: "type",
+                type: {
+                    name: "String"
+                }
+            },
         }
     }
 };
