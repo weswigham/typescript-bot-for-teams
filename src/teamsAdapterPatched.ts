@@ -95,7 +95,7 @@ export class PatchedTeamsAdapter extends TeamsAdapter {
 
         return createReplyChain(teamsCtx, {
             activity: o,
-            channelData: teamsCtx.getTeamsChannelData()
+            channelData: { channel: { id: teamsCtx.channel.id } }
         }).then(resp => {
             // Set responded flag
             if (sentNonTraceActivity) { turnContext.responded = true; }
