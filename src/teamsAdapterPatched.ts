@@ -117,7 +117,7 @@ export class PatchedTeamsAdapter extends TeamsAdapter {
         const teamsCtx = TeamsContext.from(context);
         return createReplyChain(teamsCtx, {
             activity: o,
-            channelData: { channel: { id: ref.channelId } }
+            channelData: { channel: { id: ref.conversation.id.split(";")[0] } }
         });
     }
 }
