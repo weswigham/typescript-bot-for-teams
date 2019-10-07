@@ -78,28 +78,14 @@ const createReplyChainOperationSpec: msRest.OperationSpec = {
 };
 
 export class PatchedTeamsAdapter extends TeamsAdapter {
-    createReplyChainPatched(turnContext: TurnContext, activity: Partial<Activity>, inGeneralChannel?: boolean) {
-        let sentNonTraceActivity: boolean = false;
-        const teamsCtx = TeamsContext.from(turnContext);
-        const ref: Partial<ConversationReference> = TurnContext.getConversationReference(turnContext.activity);
+    createReplyChainFromConversationReference(context: TurnContext, ref: Partial<ConversationReference>, activity: Partial<Activity>) {
         const o: Partial<Activity> = TurnContext.applyConversationReference({ ...activity }, ref);
-        try {
-            o.conversation.id = inGeneralChannel
-                ? teamsCtx.getGeneralChannel().id
-                : teamsCtx.channel.id;
-        } catch (e) {
-            // do nothing for fields fetching error
-        }
         if (!o.type) { o.type = ActivityTypes.Message; }
-        if (o.type !== ActivityTypes.Trace) { sentNonTraceActivity = true; }
 
+        const teamsCtx = TeamsContext.from(context);
         return createReplyChain(teamsCtx, {
             activity: o,
-            channelData: { channel: { id: teamsCtx.channel.id } }
-        }).then(resp => {
-            // Set responded flag
-            if (sentNonTraceActivity) { turnContext.responded = true; }
-            return resp;
+            channelData: { channel: { id: ref.channelId } }
         });
     }
 }

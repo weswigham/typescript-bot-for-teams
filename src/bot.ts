@@ -45,9 +45,9 @@ export class TypescriptStandupBot {
     async postStandupThread(ref: Partial<ConversationReference>) {
         this.adapter.continueConversation(ref, async context => {
             const date = moment().tz("America/Los_Angeles").format("YYYY-MM-DD");
-            await this.adapter.createReplyChainPatched(context, {
+            await this.adapter.createReplyChainFromConversationReference(context, ref, {
                 text: `**Standup ${date}**`
-            }, /*inGeneral*/ false);
+            });
         });
     }
 
