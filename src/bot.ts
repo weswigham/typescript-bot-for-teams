@@ -38,11 +38,13 @@ export class TypescriptStandupBot {
     async setupAsync() {
         const data: Partial<BotStorageSchema> = await this.storage.read(["ref", "cronExpr"]);
         if (data.cronExpr && data.ref) {
+            console.log(`Setting up standup cron from existing data...`);
             await this.setupStandupCron(data.cronExpr.value, data.ref.value, /*save*/ false);
         }
     }
 
     async postStandupThread(ref: Partial<ConversationReference>) {
+        console.log(`Posting standup thread...`);
         this.adapter.continueConversation(ref, async context => {
             const date = moment().tz("America/Los_Angeles").format("YYYY-MM-DD");
             await this.adapter.createReplyChainFromConversationReference(context, ref, {
@@ -53,6 +55,7 @@ export class TypescriptStandupBot {
 
     async setupStandupCron(cronExpr: string, ref: Partial<ConversationReference>, save: boolean) {
         if (this.task) {
+            console.log(`Existing cron task stopped...`);
             this.task.stop();
         }
         this.task = new CronJob(cronExpr, () => {
@@ -63,11 +66,12 @@ export class TypescriptStandupBot {
                 cronExpr: { value: cronExpr, eTag: "*" },
                 ref: { value: ref, eTag: "*" }
             };
+            console.log(`Saving off cron expression ${cronExpr}`);
             await this.storage.write(toStore);
         }
     }
 
-    async handleSceduleStandupMessage(turnContext: TurnContext, cronExpr: string) {
+    async handleScheduleStandupMessage(turnContext: TurnContext, cronExpr: string) {
         if (!validate(cronExpr)) {
             await turnContext.sendActivity(`'${cronExpr}' is not a valid cron expression. Try something like '30 10 * * mon,tue,wed,thu,fri', which would schedule a standup at 10:30 each weekday.`);
             return;
@@ -82,10 +86,12 @@ export class TypescriptStandupBot {
 
     async onTurn(turnContext: TurnContext) {
         if (turnContext.activity.type === "message") {
+            console.log(`Got message!`);
             const text = turnContext.activity.text;
             const match = scheduleMessageRegex.exec(text);
             if (match) {
-                await this.handleSceduleStandupMessage(turnContext, match[1]);
+                console.log(`Message matched scheduling request...`);
+                await this.handleScheduleStandupMessage(turnContext, match[1]);
             }
         }
         await this.conversationState.saveChanges(turnContext);

@@ -2,6 +2,7 @@ import { TeamsAdapter, TeamsContext, TeamsConnectorClient, Teams, TeamsChannelDa
 import { TurnContext, Activity, ConversationReference, ActivityTypes } from "botbuilder";
 import * as msRest from "@azure/ms-rest-js";
 import * as Mappers from "botbuilder-teams/lib/schema/models/mappers";
+import { MicrosoftAppCredentials } from "botframework-connector";
 
 async function createReplyChain(ctx: TeamsContext, args: { activity: Partial<Activity>, channelData: TeamsChannelData }) {
     return (await ctx.teamsConnectorClient.teams["client"].sendOperationRequest(
@@ -115,6 +116,8 @@ export class PatchedTeamsAdapter extends TeamsAdapter {
         if (!o.type) { o.type = ActivityTypes.Message; }
 
         const teamsCtx = TeamsContext.from(context);
+        console.log(`Trusting service URL ${activity.serviceUrl}`);
+        MicrosoftAppCredentials.trustServiceUrl(activity.serviceUrl);
         return createReplyChain(teamsCtx, {
             activity: o,
             channelData: { channel: { id: ref.conversation.id.split(";")[0] } }
