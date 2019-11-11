@@ -24,6 +24,7 @@ interface BotStorageSchema {
 
 export class TypescriptStandupBot {
     private task: CronJob | undefined;
+    private _heartbeat: CronJob = new CronJob("* * * * *", () => console.log(`[${moment().tz("America/Los_Angeles").format("YYYY-MM-DD hh:mm:ss a")}] Service is still ticking...`));
     constructor(
         private conversationState: BotState,
         private storage: Storage,
@@ -61,6 +62,7 @@ export class TypescriptStandupBot {
         this.task = new CronJob(cronExpr, () => {
             this.postStandupThread(ref);
         }, null, true, "America/Los_Angeles", this);
+        console.log(`Standups scheduled for '${cronExpr}', next up on ${this.task.nextDate().toString()}`);
         if (save) {
             const toStore: BotStorageSchema = {
                 cronExpr: { value: cronExpr, eTag: "*" },

@@ -42,9 +42,9 @@ const adapter = new PatchedTeamsAdapter({
 adapter.use(new TeamsMiddleware());
 
 // Catch-all for any unhandled errors in your bot.
-//adapter.onTurnError = async (_context, error) => {
-//    throw error; // Rethrow error so stack trace is reported - fail hard
-//};
+adapter.onTurnError = async (_context, error) => {
+    console.error(error.toString());
+};
 
 const bot = new TypescriptStandupBot(botState, storage, adapter);
 
