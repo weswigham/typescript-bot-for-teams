@@ -34,6 +34,7 @@ export class TypescriptStandupBot {
         // If that turns out to be problematic, we can try to queue turns while initialization
         // is ongoing - but that's quite a bit for an edge case that might not be a problem.
         this.setupAsync();
+        this._heartbeat.start();
     }
 
     async setupAsync() {
@@ -62,6 +63,7 @@ export class TypescriptStandupBot {
         this.task = new CronJob(cronExpr, () => {
             this.postStandupThread(ref);
         }, null, true, "America/Los_Angeles", this);
+        this.task.start();
         console.log(`Standups scheduled for '${cronExpr}', next up on ${this.task.nextDate().toString()}`);
         if (save) {
             const toStore: BotStorageSchema = {
