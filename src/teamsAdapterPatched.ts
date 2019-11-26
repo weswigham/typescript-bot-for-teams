@@ -117,8 +117,8 @@ export class PatchedTeamsAdapter extends TeamsAdapter {
 
         const teamsCtx = TeamsContext.from(context);
         const hardcodedServiceUrl = "https://smba.trafficmanager.net/amer/";
-        console.log(`Trusting service URL ${activity.serviceUrl || hardcodedServiceUrl}`);
-        MicrosoftAppCredentials.trustServiceUrl(activity.serviceUrl || hardcodedServiceUrl);
+        console.log(`Trusting service URL${!activity.serviceUrl ? ref.serviceUrl ? " (from ref)" : " (hardcoded)" : ""} ${activity.serviceUrl || ref.serviceUrl || hardcodedServiceUrl}`);
+        MicrosoftAppCredentials.trustServiceUrl(activity.serviceUrl || ref.serviceUrl || hardcodedServiceUrl);
         return createReplyChain(teamsCtx, {
             activity: o,
             channelData: { channel: { id: ref.conversation.id.split(";")[0] } }
