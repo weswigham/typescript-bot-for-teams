@@ -39,7 +39,7 @@
         "cron": "^1.7.2",
         "dotenv": "~8.0.0",
         "moment": "^2.24.0",
-        "moment-timezone": "^0.5.26",
+        "moment-timezone": "^0.5.35",
         "ms-rest-js": "^1.0.1",
         "nodemon": "~1.19.1",
         "prompts": "~2.2.1",
