@@ -34,7 +34,7 @@
         "@types/prompts": "~2.0.1",
         "@types/restify": "7.2.12",
         "botbuilder": "~4.5.1",
-        "botbuilder-azure": "^4.5.3",
+        "botbuilder-azure": "^4.18.0",
         "botbuilder-teams": "^4.0.0-beta1",
         "cron": "^1.7.2",
         "dotenv": "~8.0.0",
